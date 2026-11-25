@@ -6,6 +6,29 @@ const path = require('path');
 const { getCatalog, validateRunRequest } = require('../../execution/catalog');
 const { createFaultConfig } = require('../../execution/faults');
 const { RunStore } = require('../../execution/store');
+const { RunManager } = require('../../execution/runner');
+
+test('cloud mode runs headlessly while local mode stays visible', async () => {
+  const rootDir = fs.mkdtempSync(path.join(os.tmpdir(), 'testsphere-headless-'));
+  const previous = process.env.TESTSPHERE_HEADLESS;
+  const manager = new RunManager({ rootDir });
+  let launched;
+  manager.execute = async (_runId, config) => { launched = config; };
+  try {
+    process.env.TESTSPHERE_HEADLESS = 'true';
+    const cloudRun = await manager.start({ testId: 'local-cart-total', screenshots: 'never' });
+    assert.equal(cloudRun.headed, false);
+    assert.equal(launched.headed, false);
+    delete process.env.TESTSPHERE_HEADLESS;
+    const localRun = await manager.start({ testId: 'local-cart-total', screenshots: 'never' });
+    assert.equal(localRun.headed, true);
+    assert.equal(launched.headed, true);
+  } finally {
+    if (previous === undefined) delete process.env.TESTSPHERE_HEADLESS;
+    else process.env.TESTSPHERE_HEADLESS = previous;
+    fs.rmSync(rootDir, { recursive: true, force: true });
+  }
+});
 
 test('approved catalog exposes the three safe targets and executable scenarios', () => {
   const catalog = getCatalog();

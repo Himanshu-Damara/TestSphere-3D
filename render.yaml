@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: testsphere-3d-runner
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/execution/catalog
+    envVars:
+      - key: TESTSPHERE_HEADLESS
+        value: 'true'

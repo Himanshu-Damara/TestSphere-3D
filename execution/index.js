@@ -5,7 +5,7 @@ const { createFaultConfig } = require('./faults');
 
 function createExecutionRuntime({ projectRoot }) {
   const faults = createFaultConfig();
-  const manager = new RunManager({ rootDir: path.join(projectRoot, '.testsphere') });
+  const manager = new RunManager({ rootDir: path.resolve(process.env.TESTSPHERE_DATA_DIR || path.join(projectRoot, '.testsphere')) });
   return {
     faults,
     manager,

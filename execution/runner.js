@@ -25,10 +25,11 @@ class RunManager {
     const validation = validateRunRequest(input);
     if (!validation.valid) { const error = new Error(validation.errors.join('; ')); error.statusCode = 400; throw error; }
     const screenshots = normalizeScreenshots(input.screenshots);
-    const run = this.store.createRun({ tests: validation.tests, test: validation.test, target: validation.target, browser: validation.browser, headed: true, screenshots, trace: input.trace === true, preview: input.preview !== false });
+    const headed = process.env.TESTSPHERE_HEADLESS !== 'true';
+    const run = this.store.createRun({ tests: validation.tests, test: validation.test, target: validation.target, browser: validation.browser, headed, screenshots, trace: input.trace === true, preview: input.preview !== false });
     const control = { stopRequested: false, browser: null, context: null };
     this.active.set(run.id, control);
-    this.execute(run.id, { tests: validation.tests, target: validation.target, browser: validation.browser, headed: true, screenshots, trace: input.trace === true }).catch(() => {});
+    this.execute(run.id, { tests: validation.tests, target: validation.target, browser: validation.browser, headed, screenshots, trace: input.trace === true }).catch(() => {});
     return this.store.getRun(run.id);
   }
   async stop(runId) { const run = this.store.getRun(runId); if (!run) return null; if (['passed','failed','stopped'].includes(run.status)) return run; const control = this.active.get(runId); this.store.requestStop(runId); if (control) { control.stopRequested = true; this.emit(runId, 'run.stop_requested', { kind: 'run', status: 'stopping' }); if (control.browser) await control.browser.close().catch(() => {}); } return this.store.getRun(runId); }

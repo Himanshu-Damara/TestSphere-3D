@@ -24,6 +24,8 @@ TestSphere 3D turns this Playwright regression project into a controlled, observ
 
 ## Setup
 
+For cloud hosting, see [DEPLOYMENT.md](DEPLOYMENT.md).
+
 ```bash
 npm install
 npx playwright install

@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+.testsphere
+test-results
+playwright-report
+testsphere-run.log
+.env
+.env.*
+.vercel
