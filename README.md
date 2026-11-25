@@ -2,9 +2,18 @@
 
 **Automate. Visualize. Debug.**
 
-**Live links:** [TestSphere dashboard](https://testsphere-3d.vercel.app/platform/) · [QA Lab storefront](https://testsphere-3d.vercel.app/) · [Runner health and catalog](https://testsphere-3d-runner.onrender.com/api/execution/catalog)
+## Live deployment links
 
-**Project guides:** [Flowcharts and workflows](WORKFLOWS.md) · [Architecture](ARCHITECTURE.md) · [Deployment](DEPLOYMENT.md) · [GitHub Actions workflow](.github/workflows/playwright.yml)
+- TestSphere dashboard: https://testsphere-3d.vercel.app/platform/
+- QA Lab storefront: https://testsphere-3d.vercel.app/
+- Runner health and test catalog: https://testsphere-3d-runner.onrender.com/api/execution/catalog
+
+## Project flowcharts and workflow links
+
+- Flowcharts and workflows: https://github.com/Himanshu-Damara/TestSphere-3D/blob/main/WORKFLOWS.md
+- Architecture: https://github.com/Himanshu-Damara/TestSphere-3D/blob/main/ARCHITECTURE.md
+- Deployment guide: https://github.com/Himanshu-Damara/TestSphere-3D/blob/main/DEPLOYMENT.md
+- GitHub Actions workflow: https://github.com/Himanshu-Damara/TestSphere-3D/actions/workflows/playwright.yml
 
 The Vercel dashboard currently requires Vercel sign-in. Render's free instance keeps run history only until it restarts or redeploys.
 
@@ -27,7 +36,7 @@ flowchart LR
     Store --> Dashboard
 ```
 
-Each target has **30 dashboard test cases**, for **90 total**. See [all project flowcharts](WORKFLOWS.md) for test execution, target flows, deployment, and CI.
+Each target has **30 dashboard test cases**, for **90 total**. The flowcharts URL above covers test execution, target flows, deployment, and CI.
 
 ## What is working
 
@@ -49,7 +58,7 @@ Each target has **30 dashboard test cases**, for **90 total**. See [all project 
 
 ## Setup
 
-For cloud hosting, see [DEPLOYMENT.md](DEPLOYMENT.md).
+For cloud hosting, see the deployment guide URL above.
 
 ```bash
 npm install
