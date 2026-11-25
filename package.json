@@ -1,17 +1,22 @@
 {
   "name": "saucedemo-regression-playwright",
   "version": "1.0.0",
-  "description": "Cross-browser regression test automation for SauceDemo using Playwright",
+  "description": "Test Automation Framework and Live Execution Platform for SauceDemo, QA Lab, and Amazon India",
   "private": true,
   "scripts": {
+    "start": "node server.js",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:chromium": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "test:backend": "node --test tests/backend/*.test.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }

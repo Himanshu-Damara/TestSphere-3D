@@ -56,6 +56,12 @@ The objectives are to automate important SauceDemo user journeys, organize the t
 
 The framework follows the Page Object Model. `LoginPage`, `ProductsPage`, `CartPage`, and `CheckoutPage` contain page-specific locators and actions. Test specifications contain business-level scenarios, while `tests/fixtures.js` provides reusable page objects and an authenticated session setup. Stable `data-test` attributes and role-based locators are preferred to reduce test maintenance.
 
+The TestSphere dashboard extension uses an approved catalogue and execution API to launch visible Playwright browser runs. An event bus streams steps and results to the dashboard; a run store saves history and evidence.
+
+![Architecture diagram showing the dashboard, execution API, approved catalogue, Playwright runner, event bus, run store, and test sites](assets/architecture-diagram.png)
+
+*Figure 1. TestSphere regression test automation architecture.*
+
 ## 6. Test Cases
 
 | ID | Test scenario | Expected result |
