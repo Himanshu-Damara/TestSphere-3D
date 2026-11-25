@@ -2,7 +2,32 @@
 
 **Automate. Visualize. Debug.**
 
-TestSphere 3D turns this Playwright regression project into a controlled, observable testing laboratory. It preserves the original SauceDemo Page Object Model suite and adds a local execution API, live server-sent events, evidence artifacts, a simple Amazon India homepage smoke check, and a dashboard/laboratory UI.
+**Live links:** [TestSphere dashboard](https://testsphere-3d.vercel.app/platform/) · [QA Lab storefront](https://testsphere-3d.vercel.app/) · [Runner health and catalog](https://testsphere-3d-runner.onrender.com/api/execution/catalog)
+
+**Project guides:** [Flowcharts and workflows](WORKFLOWS.md) · [Architecture](ARCHITECTURE.md) · [Deployment](DEPLOYMENT.md) · [GitHub Actions workflow](.github/workflows/playwright.yml)
+
+The Vercel dashboard currently requires Vercel sign-in. Render's free instance keeps run history only until it restarts or redeploys.
+
+TestSphere 3D turns this Playwright regression project into a controlled, observable testing laboratory. It preserves the original SauceDemo Page Object Model suite and adds an execution API, live server-sent events, evidence artifacts, 30 public Amazon India checks, and a dashboard/laboratory UI.
+
+## How the deployed platform works
+
+```mermaid
+flowchart LR
+    User[Student] --> Dashboard[Vercel dashboard]
+    Dashboard -->|API requests and live events| Backend[Render Express API]
+    Backend --> Catalog[Approved test catalog]
+    Catalog --> Runner[Playwright runner]
+    Runner --> Sauce[SauceDemo]
+    Runner --> Lab[QA Lab]
+    Runner --> Amazon[Amazon India]
+    Runner --> Events[Live event stream]
+    Runner --> Store[Run history and evidence]
+    Events --> Dashboard
+    Store --> Dashboard
+```
+
+Each target has **30 dashboard test cases**, for **90 total**. See [all project flowcharts](WORKFLOWS.md) for test execution, target flows, deployment, and CI.
 
 ## What is working
 
@@ -10,7 +35,7 @@ TestSphere 3D turns this Playwright regression project into a controlled, observ
 - TestSphere dashboard: `http://localhost:3000/platform/`.
 - Light-first responsive UI with a persisted light/dark theme toggle.
 - Live Testing Laboratory with real execution timeline, assertions, console output, artifact links, and a CSS 3D/2D flow view.
-- Dark execution monitor with one-click launch, live pass/fail/skip/remaining totals, compact per-case statuses and durations. Tests open in a separate visible browser window; saved screenshots remain available as evidence.
+- Dark execution monitor with one-click launch, live pass/fail/skip/remaining totals, compact per-case statuses and durations. Local tests open in a separate visible browser window; deployed tests run headlessly and provide saved evidence.
 - Real Playwright execution for:
   - Thirty SauceDemo dashboard checks for login, home/products, cart, checkout, and logout. Its demo login has no password reset control; the suite records that availability check.
   - Thirty My Website (local QA Lab) checks, including a local demo password reset flow, no-match search, and cart quantity changes.
@@ -18,7 +43,7 @@ TestSphere 3D turns this Playwright regression project into a controlled, observ
 - Local-only cart-total fault injection for demonstrating a genuine detected defect.
 - Local demo registration and isolated mock payment outcomes (approved, declined, invalid, cancelled).
 - Server-side local order total validation so the demo does not trust a browser-supplied total.
-- Persistent local run history and artifacts under `.testsphere/` (ignored by Git). On restart, interrupted runs are recorded as failed so history does not stay stuck on “running.”
+- Local run history and artifacts under `.testsphere/` (ignored by Git). On restart, interrupted runs are recorded as failed so history does not stay stuck on “running.” Cloud history needs a persistent disk to survive service restarts.
 - Per-run HTML summary report at `/api/execution/runs/:runId/report`, with steps, assertions, failures, and evidence links.
 - Existing local QA Lab storefront remains available at `http://localhost:3000/`.
 
@@ -81,6 +106,8 @@ public/                     Existing local QA Lab storefront
 server.js                   Express app, local store routes, TestSphere API mount
 playwright.config.js        Browser projects and Playwright reporting
 ARCHITECTURE.md             Runtime design and event contract
+WORKFLOWS.md                Execution, testing, deployment, and CI flowcharts
+DEPLOYMENT.md               Live URLs, cloud setup, and storage limitations
 TESTING_GUIDE.md            How to run and verify scenarios
 DEMO_GUIDE.md               Viva/demo walkthrough
 ```

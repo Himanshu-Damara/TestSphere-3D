@@ -1,32 +1,29 @@
 # TestSphere 3D Architecture
 
+Live dashboard: [TestSphere on Vercel](https://testsphere-3d.vercel.app/platform/). See [all flowcharts](WORKFLOWS.md) and the [PNG architecture diagram](assets/architecture-diagram.png).
+
 ## Runtime topology
 
-```text
-Browser UI (/platform/)
-        |
-        | REST + Server-Sent Events
-        v
-Express server (server.js)
-        |
-        +-- /api/execution/catalog, /runs, /faults, /artifacts
-        |
-        v
-RunManager (execution/runner.js)
-        |
-        +-- approved scenario adapter
-        +-- Playwright browser (Chromium / Firefox / WebKit)
-        +-- RunEventBus (ordered replayable events)
-        +-- RunStore (.testsphere/runs.json + artifacts)
+```mermaid
+flowchart LR
+    Dashboard[Vercel dashboard] -->|REST and SSE via rewrite| Server[Render Express server]
+    Server --> Catalog[Approved catalog]
+    Catalog --> Manager[Run manager]
+    Manager --> Browser[Playwright browser]
+    Browser --> Targets[Three approved targets]
+    Manager --> Events[Event bus]
+    Manager --> Store[Run store and artifacts]
+    Events --> Dashboard
+    Store --> Dashboard
 ```
 
-The existing local storefront routes and SauceDemo test files remain in place. TestSphere is an additive integration layer rather than a replacement for the regression framework.
+Locally, `server.js` serves both the dashboard and QA Lab, and Playwright opens a visible browser window. In the hosted deployment, Vercel serves `public/`, rewrites `/api/*` to Render, and Playwright runs headlessly. The existing SauceDemo Page Object Model spec files remain available alongside the 90-case dashboard catalog.
 
 ## Approved catalog
 
 `execution/catalog.js` is the allowlist. It defines targets, test IDs, safety descriptions, and browser options. A frontend request cannot provide an arbitrary URL, shell command, executable path, or browser argument.
 
-Current approved scenarios:
+There are **30 cases per target, 90 total**. The three core examples below are in `TESTS`; the remaining 87 are in `ADDITIONAL_TESTS` in `execution/catalog.js`.
 
 | ID | Target | Behavior |
 |---|---|---|
@@ -60,7 +57,7 @@ Examples:
 
 ```json
 {
-  "type": "assertion",
+  "type": "assertion.failed",
   "name": "cart total equals subtotal plus tax plus shipping",
   "status": "failed",
   "expected": 58.99,
