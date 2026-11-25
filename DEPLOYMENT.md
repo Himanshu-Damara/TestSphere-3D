@@ -10,9 +10,17 @@ Render's free filesystem is temporary. For history and screenshots to survive re
 
 ## Vercel dashboard
 
-The Vercel project serves the `public/` folder. Its `/api/*` requests must be rewritten to the Render service URL. The dashboard uses server-sent events and artifact URLs through this API route.
+The Vercel project serves the `public/` folder. `vercel.json` rewrites `/api/*` to `https://testsphere-3d-runner.onrender.com`. The dashboard uses server-sent events and artifact URLs through this API route.
 
 The deployed runner has no screen on the student's computer. To watch a browser window directly, run the project locally with `npm start` and open `/platform/`.
+
+## Current deployment
+
+- Vercel dashboard: `https://testsphere-3d.vercel.app/platform/`
+- Render runner and QA Lab: `https://testsphere-3d-runner.onrender.com/`
+- GitHub source: `https://github.com/Himanshu-Damara/TestSphere-3D`
+
+The Vercel project is connected to the GitHub `main` branch and currently uses Vercel Authentication. Visitors need access to the Vercel account unless that deployment protection setting is deliberately changed.
 
 ## Smoke checks
 
